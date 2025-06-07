@@ -177,9 +177,9 @@
     let is-internet-source(x) = {
       return (
         x.details.type in ("web", "blog")
-          or if x.details.parent != none {
+          or if "parent" in x.details.keys() {
             x.details.parent.type in ("web", "blog")
-          }
+          } else { false }
       )
     }
 
