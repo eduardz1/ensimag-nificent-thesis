@@ -1,4 +1,4 @@
-# The `my-package` Package
+# The `ensimag-nificent-thesis` Template
 <div align="center">Version 0.1.0</div>
 
 A short description about the project and/or client.
@@ -35,11 +35,6 @@ These instructions will get you a copy of the project up and running on the typs
 #show: my-show-rule.with()
 #my-func()
 ```
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="./thumbnail-dark.svg">
-  <img src="./thumbnail-light.svg">
-</picture>
 
 ### Installation
 
