@@ -166,20 +166,27 @@
 
   counter(page).update(0)
 
-  // TODO: numbering should be none for multiple bibliographies but it is not
-  // supported yet in the alexandria package and Typst doesn't support multiple
-  // bibliographies yet.
-  // show load-bibliography: set heading(level: 2, numbering: none)
-
   body
+
+  heading(level: 1, "Bibliography")
+
+  set heading(numbering: none, offset: 1)
 
   context {
     let (references, ..rest) = get-bibliography("x-")
+    let is-internet-source(x) = {
+      return (
+        x.details.type in ("web", "blog")
+          or if x.details.parent != none {
+            x.details.parent.type in ("web", "blog")
+          }
+      )
+    }
 
     render-bibliography(
       title: [Scientific Literature],
       (
-        references: references.filter(x => x.details.type != "internet"),
+        references: references.filter(x => not is-internet-source(x)),
         ..rest,
       ),
     )
@@ -187,7 +194,7 @@
     render-bibliography(
       title: [Internet Sources],
       (
-        references: references.filter(x => x.details.type == "internet"),
+        references: references.filter(x => is-internet-source(x)),
         ..rest,
       ),
     )
