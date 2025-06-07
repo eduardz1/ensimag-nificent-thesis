@@ -29,10 +29,11 @@
   )
 
   v(0.2fr)
-  
-  [
-    Master of Science in Informatics at Grenoble\
-    #text([Master Informatique, Université Grenoble Alpes], lang: "fr")\
+
+  block[
+    #let jb = linebreak(justify: true)
+    Master of Science in Informatics at Grenoble #jb
+    #text([Master Informatique, Université Grenoble Alpes], lang: "fr") #jb
     Specialization #specialization
   ]
 
