@@ -112,19 +112,19 @@
   }
   outline(title: "Table of Contents")
 
-  if list-of-figures {
+  if list-of-tables {
     pagebreak(weak: true, to: "odd")
-    outline(target: figure.where(kind: "table"), title: "List of Tables")
+    outline(target: figure.where(kind: table), title: "List of Tables")
   }
 
   if list-of-figures {
     pagebreak(weak: true, to: "odd")
-    outline(target: figure.where(kind: "image"), title: "List of Figures")
+    outline(target: figure.where(kind: image), title: "List of Figures")
   }
 
   if list-of-listings {
     pagebreak(weak: true, to: "odd")
-    outline(target: figure.where(kind: "raw"), title: "List of Listings")
+    outline(target: figure.where(kind: raw), title: "List of Listings")
   }
 
   show: codly-init.with()
