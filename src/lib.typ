@@ -2,11 +2,8 @@
 #import "@preview/alexandria:0.2.0": *
 #import "@preview/codly:1.3.0": *
 #import "@preview/codly-languages:0.1.8": *
-#import "@preview/glossarium:0.5.6": gls, glspl
+#import "@preview/glossy:0.8.0": *
 #import "cover.typ": cover
-
-// FIXME: workaround for the lack of `std` scope
-#let std-bibliography = bibliography
 
 /// Template for a thesis document.
 /// -> content
@@ -44,6 +41,8 @@
   list-of-figures: false,
   /// Wether to include the list of code listings. -> bool
   list-of-listings: false,
+  /// A glossary can be included in the document if needed. -> yaml | none
+  glossary-entries: none,
   body,
 ) = {
   set document(title: title, author: name)
@@ -140,31 +139,34 @@
   bibliography
 
   // Show page number only on non-empty pages
-  set page(
-    header: context {
-      let page = here().page()
-      let is-start-chapter = query(heading.where(level: 1))
-        .map(it => it.location().page())
-        .contains(page)
-      if not state("content.switch", false).get() and not is-start-chapter {
-        return
-      }
-      state("content.pages", (0,)).update(it => {
-        it.push(page)
-        return it
-      })
-    },
-    footer: context {
-      let has-content = state("content.pages", (0,))
-        .get()
-        .contains(here().page())
-      if has-content {
-        align(center, counter(page).display())
-      }
-    },
-  )
+  // TODO: need to fix this
+  // set page(
+  //   header: context {
+  //     let page = here().page()
+  //     let is-start-chapter = query(heading.where(level: 1))
+  //       .map(it => it.location().page())
+  //       .contains(page)
+  //     if not state("content.switch", false).get() and not is-start-chapter {
+  //       return
+  //     }
+  //     state("content.pages", (0,)).update(it => {
+  //       it.push(page)
+  //       return it
+  //     })
+  //   },
+  //   footer: context {
+  //     let has-content = state("content.pages", (0,))
+  //       .get()
+  //       .contains(here().page())
+  //     if has-content {
+  //       align(center, counter(page).display())
+  //     }
+  //   },
+  // )
 
   counter(page).update(0)
+
+  show: init-glossary.with(glossary-entries, term-links: true)
 
   body
 
@@ -198,5 +200,9 @@
         ..rest,
       ),
     )
+  }
+
+  if (glossary != none) {
+    glossary(title: "Glossary", theme: theme-chicago-index)
   }
 }

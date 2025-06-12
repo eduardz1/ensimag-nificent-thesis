@@ -1,5 +1,4 @@
-#import "@preview/alexandria:0.2.0": load-bibliography
-#import "@local/ensimag-nificent-thesis:0.1.0": template
+#import "@local/ensimag-nificent-thesis:0.1.0": template, load-bibliography
 #import "abstract.typ": abstract-en, abstract-fr
 #import "acknowledgements.typ": acknowledgements
 
@@ -20,6 +19,7 @@
   list-of-figures: true,
   list-of-tables: true,
   list-of-listings: true,
+  glossary: yaml("glossary.yaml")
 )
 
 #include "chapters/introduction.typ"
