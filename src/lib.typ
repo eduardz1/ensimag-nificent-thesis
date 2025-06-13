@@ -52,8 +52,10 @@
   set page(paper: "a4", margin: 3.5cm)
 
   show figure.caption: emph
+  show figure.caption: set text(size: 0.8em)
+  show figure: set block(above: 2em, below: 2em)
 
-  set par(justify: true, first-line-indent: 1em)
+  set par(justify: true, first-line-indent: 1.8em)
 
   set heading(numbering: "1.1")
   show heading.where(level: 1, outlined: true): it => {
@@ -127,6 +129,8 @@
     outline(target: figure.where(kind: raw), title: "List of Listings")
   }
 
+  show raw: set text(font: "Fira Code")
+  show raw.where(block: true): set text(0.8em)
   show: codly-init.with()
   codly(
     languages: codly-languages,
