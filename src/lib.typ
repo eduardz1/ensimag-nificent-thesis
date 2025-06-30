@@ -88,12 +88,10 @@
   heading(level: 2, numbering: none, outlined: false, "Abstract")
   abstract.en
 
-  heading(
-    level: 2,
-    numbering: none,
-    outlined: false,
-    text("Resumé", lang: "fr"),
-  )
+  heading(level: 2, numbering: none, outlined: false, text(
+    "Resumé",
+    lang: "fr",
+  ))
   abstract.fr
 
   v(4fr)
@@ -132,41 +130,40 @@
   show raw: set text(font: "Fira Code")
   show raw.where(block: true): set text(0.8em)
   show: codly-init.with()
-  codly(
-    languages: codly-languages,
-    zebra-fill: none,
-    number-format: it => text(fill: luma(200), str(it)),
-  )
+  codly(languages: codly-languages, zebra-fill: none, number-format: it => text(
+    fill: luma(200),
+    str(it),
+  ))
 
   show: alexandria(prefix: "x-")
 
   bibliography
 
   // Show page number only on non-empty pages
-  // TODO: need to fix this
-  // set page(
-  //   header: context {
-  //     let page = here().page()
-  //     let is-start-chapter = query(heading.where(level: 1))
-  //       .map(it => it.location().page())
-  //       .contains(page)
-  //     if not state("content.switch", false).get() and not is-start-chapter {
-  //       return
-  //     }
-  //     state("content.pages", (0,)).update(it => {
-  //       it.push(page)
-  //       return it
-  //     })
-  //   },
-  //   footer: context {
-  //     let has-content = state("content.pages", (0,))
-  //       .get()
-  //       .contains(here().page())
-  //     if has-content {
-  //       align(center, counter(page).display())
-  //     }
-  //   },
-  // )
+  // TODO: need to fix this, causes the layout not to converge within 5 attempts
+  set page(
+    header: context {
+      let page = here().page()
+      let is-start-chapter = query(heading.where(level: 1))
+        .map(it => it.location().page())
+        .contains(page)
+      if not state("content.switch", false).get() and not is-start-chapter {
+        return
+      }
+      state("content.pages", (0,)).update(it => {
+        it.push(page)
+        return it
+      })
+    },
+    footer: context {
+      let has-content = state("content.pages", (0,))
+        .get()
+        .contains(here().page())
+      if has-content {
+        align(center, counter(page).display())
+      }
+    },
+  )
 
   counter(page).update(0)
 
@@ -189,21 +186,15 @@
       )
     }
 
-    render-bibliography(
-      title: [Scientific Literature],
-      (
-        references: references.filter(x => not is-internet-source(x)),
-        ..rest,
-      ),
-    )
+    render-bibliography(title: [Scientific Literature], (
+      references: references.filter(x => not is-internet-source(x)),
+      ..rest,
+    ))
 
-    render-bibliography(
-      title: [Internet Sources],
-      (
-        references: references.filter(x => is-internet-source(x)),
-        ..rest,
-      ),
-    )
+    render-bibliography(title: [Internet Sources], (
+      references: references.filter(x => is-internet-source(x)),
+      ..rest,
+    ))
   }
 
   if (glossary != none) {
