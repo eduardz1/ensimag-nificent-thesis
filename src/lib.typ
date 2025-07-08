@@ -57,6 +57,8 @@
 
   set par(justify: true, first-line-indent: 1.8em)
 
+  set math.equation(numbering: "(1)")
+
   set heading(numbering: "1.1")
   show heading.where(level: 1, outlined: true): it => {
     state("content.switch").update(false)
