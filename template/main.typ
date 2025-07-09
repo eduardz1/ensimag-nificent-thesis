@@ -15,11 +15,11 @@
   ),
   abstract: (en: abstract-en, fr: abstract-fr),
   acknowledgements: acknowledgements,
-  bibliography: load-bibliography(read("works.bib", encoding: none)),
+  bib-func: load-bibliography(read("works.bib", encoding: none)),
   list-of-figures: true,
   list-of-tables: true,
   list-of-listings: true,
-  glossary: yaml("glossary.yaml")
+  glossary-entries: yaml("glossary.yaml")
 )
 
 #include "chapters/introduction.typ"

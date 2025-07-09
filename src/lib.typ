@@ -34,7 +34,7 @@
   /// The acknowledgments of the thesis -> content | none
   acknowledgements: none,
   /// Call to the bibliography function
-  bibliography: none,
+  bib-func: none,
   /// Wether to include the list of tables. -> bool
   list-of-tables: false,
   /// Wether to include the list of figures. -> bool
@@ -47,7 +47,7 @@
 ) = {
   set document(title: title, author: name)
 
-  set text(font: "New Computer Modern", lang: "en", size: 12pt)
+  set text(font: "New Computer Modern", lang: "en", size: 11pt)
 
   set page(paper: "a4", margin: 3.5cm)
 
@@ -143,9 +143,27 @@
     str(it),
   ))
 
+  show bibliography: it => {
+    show text: it => {
+      // we must not attempt to evaluate text that is not valid markup
+      // thankfully most text _is_, but unbalanced closing brackets don't work
+      if it.text == "]" { return it }
+
+      // evaluate any formatting
+      let result = eval(it.text, mode: "markup")
+      // if nothing was formatted, return the original content
+      // to avoid infinite recursion
+      if result.func() == text { return it }
+
+      // emit the formatted content
+      result
+    }
+    it
+  }
+
   show: alexandria(prefix: "x-")
 
-  bibliography
+  bib-func
 
   // Show page number only on non-empty pages
   // TODO: need to fix this, causes the layout not to converge within 5 attempts
@@ -194,15 +212,25 @@
       )
     }
 
-    render-bibliography(title: [Scientific Literature], (
-      references: references.filter(x => not is-internet-source(x)),
-      ..rest,
-    ))
+    [= Scientific Literature]
 
-    render-bibliography(title: [Internet Sources], (
-      references: references.filter(x => is-internet-source(x)),
-      ..rest,
-    ))
+    {
+      set text(0.8em)
+      render-bibliography(title: none, (
+        references: references.filter(x => not is-internet-source(x)),
+        ..rest,
+      ))
+    }
+
+    [= Internet Sources]
+
+    {
+      set text(0.8em)
+      render-bibliography(title: none, (
+        references: references.filter(x => is-internet-source(x)),
+        ..rest,
+      ))
+    }
   }
 
   if (glossary != none) {
