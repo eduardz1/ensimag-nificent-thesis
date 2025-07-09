@@ -109,8 +109,14 @@
 
   set outline.entry(fill: repeat[ #sym.space #sym.dot.c ])
   show outline.entry.where(level: 1): it => {
-    v(1.2em, weak: true)
-    strong(it)
+    if it.element.func() != heading {
+      return it
+    }
+
+    v(2em, weak: true)
+    link(it.element.location(), strong(it.indented(it.prefix(), {
+      (it.body() + h(1fr) + it.page())
+    })))
   }
   outline(title: "Table of Contents")
 
