@@ -57,6 +57,23 @@
 
   set par(justify: true, first-line-indent: 1.8em)
 
+  // TODO: disable link boxes when printing, possibly automatically
+  // very hacky but it works
+  show link: it => {
+    if type(it.dest) != str {
+      if it.body.has("text") {
+        // glossy links
+        it
+      } else {
+        // bibliography citations
+        box(stroke: 0.5pt + red, outset: 0.2em, it)
+      }
+    } else { underline(it) } // web links
+  }
+
+  // sections, figures and equations
+  show ref: it => { box(stroke: 0.5pt + green, outset: 0.2em, it) }
+
   set math.equation(numbering: "(1)")
 
   set heading(numbering: "1.1")
