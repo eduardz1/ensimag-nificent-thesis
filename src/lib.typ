@@ -66,13 +66,13 @@
         it
       } else {
         // bibliography citations
-        box(stroke: 0.5pt + red, outset: 0.2em, it)
+        highlight(stroke: 0.5pt + red, fill: none, it)
       }
     } else { underline(it) } // web links
   }
 
   // sections, figures and equations
-  show ref: it => { box(stroke: 0.5pt + green, outset: 0.2em, it) }
+  show ref: it => { highlight(stroke: 0.5pt + green, fill: none, it) }
 
   set math.equation(numbering: "(1)")
 
