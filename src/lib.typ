@@ -155,10 +155,12 @@
   show raw: set text(font: "Fira Code")
   show raw.where(block: true): set text(0.8em)
   show: codly-init.with()
-  codly(languages: codly-languages, zebra-fill: none, number-format: it => text(
-    fill: luma(200),
-    str(it),
-  ))
+  codly(
+    languages: codly-languages,
+    aliases: ("cuda": "c++"),
+    zebra-fill: none,
+    number-format: it => text(fill: luma(200), str(it)),
+  )
 
   show bibliography: it => {
     show text: it => {
