@@ -78,9 +78,10 @@
 
   set heading(numbering: "1.1")
   show heading.where(level: 1, outlined: true): it => {
-    state("content.switch").update(false)
+    pagebreak(weak: true)
+    state("blank-page").update(true)
     pagebreak(to: "odd", weak: true)
-    state("content.switch").update(true)
+    state("blank-page").update(false)
     it
   }
   show heading: smallcaps
@@ -185,30 +186,17 @@
   bib-func
 
   // Show page number only on non-empty pages
-  // TODO: need to fix this, causes the layout not to converge within 5 attempts
-  set page(
-    header: context {
-      let page = here().page()
-      let is-start-chapter = query(heading.where(level: 1))
-        .map(it => it.location().page())
-        .contains(page)
-      if not state("content.switch", false).get() and not is-start-chapter {
-        return
-      }
-      state("content.pages", (0,)).update(it => {
-        it.push(page)
-        return it
-      })
-    },
-    footer: context {
-      let has-content = state("content.pages", (0,))
-        .get()
-        .contains(here().page())
-      if has-content {
-        align(center, counter(page).display())
-      }
-    },
-  )
+  set page(footer: context {
+    let chapters = query(selector(heading.where(level: 1)).before(here()))
+    let is-start-chapter = (
+      chapters.len() > 0 and chapters.last().location().page() == here().page()
+    )
+    let is-blank = state("blank-page", false).get()
+
+    if not is-blank {
+      align(center, counter(page).display())
+    }
+  })
 
   counter(page).update(0)
 
