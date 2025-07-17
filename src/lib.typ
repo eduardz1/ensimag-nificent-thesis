@@ -187,13 +187,7 @@
 
   // Show page number only on non-empty pages
   set page(footer: context {
-    let chapters = query(selector(heading.where(level: 1)).before(here()))
-    let is-start-chapter = (
-      chapters.len() > 0 and chapters.last().location().page() == here().page()
-    )
-    let is-blank = state("blank-page", false).get()
-
-    if not is-blank {
+    if not state("blank-page", false).get() {
       align(center, counter(page).display())
     }
   })
