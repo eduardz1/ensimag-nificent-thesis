@@ -3,6 +3,7 @@
 #import "@preview/codly:1.3.0": *
 #import "@preview/codly-languages:0.1.8": *
 #import "@preview/glossy:0.8.0": *
+#import "@preview/lovelace:0.3.0": *
 #import "cover.typ": cover
 
 /// Template for a thesis document.
@@ -238,3 +239,11 @@
     glossary(title: "Glossary", theme: theme-chicago-index)
   }
 }
+
+#let my-lovelace-defaults = (
+  line-numbering: "1",
+  hooks: 0.5em,
+)
+
+#let pseudocode = pseudocode.with(..my-lovelace-defaults)
+#let pseudocode-list = pseudocode-list.with(..my-lovelace-defaults)
