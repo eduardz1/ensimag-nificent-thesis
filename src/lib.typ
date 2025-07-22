@@ -79,6 +79,7 @@
 
   set heading(numbering: "1.1")
   show heading.where(level: 1, outlined: true): it => {
+    set par(justify: false)
     pagebreak(weak: true)
     state("blank-page").update(true)
     pagebreak(to: "odd", weak: true)
