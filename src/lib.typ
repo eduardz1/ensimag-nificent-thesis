@@ -53,8 +53,19 @@
   set page(paper: "a4", margin: 3.5cm)
 
   show figure.caption: emph
-  show figure.caption: set text(size: 0.8em)
-  show figure: set block(above: 2em, below: 2em)
+  // Floating figures appear as `place` instead of `block` so we
+  // need this workaround, see https://github.com/typst/typst/issues/6095
+  show figure: it => {
+    if it.placement == none {
+      block(it, inset: (y: .75em))
+    } else {
+      place(
+        it.placement,
+        float: true,
+        block(it, inset: (y: .75em)),
+      )
+    }
+  }
 
   set par(justify: true, first-line-indent: 1.8em)
 
@@ -74,6 +85,21 @@
 
   // sections, figures and equations
   show ref: it => { highlight(stroke: 0.5pt + green, fill: none, it) }
+
+  show figure.where(kind: table): set figure.caption(position: top)
+  show table.cell.where(y: 0): strong
+  show table.cell.where(y: 0): smallcaps
+  show table: it => {
+    set par(justify: false)
+    it
+  }
+  set table(
+    stroke: (_, y) => (
+      top: if y == 0 { 1pt } else if y == 1 { none } else { 0pt },
+      bottom: .5pt,
+    ),
+    align: center + horizon,
+  )
 
   set math.equation(numbering: "(1)")
 
@@ -242,8 +268,10 @@
 }
 
 #let my-lovelace-defaults = (
-  line-numbering: "1",
-  hooks: 0.5em,
+  line-numbering: "1:",
+  stroke: .5pt,
+  booktabs-stroke: 1pt,
+  hooks: .5em,
 )
 
 #let pseudocode = pseudocode.with(..my-lovelace-defaults)
