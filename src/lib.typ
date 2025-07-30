@@ -103,15 +103,19 @@
 
   set math.equation(numbering: "(1)")
 
-  set heading(numbering: "1.1")
-  show heading.where(level: 1, outlined: true): it => {
-    set par(justify: false)
-    pagebreak(weak: true)
-    state("blank-page").update(true)
-    pagebreak(to: "odd", weak: true)
-    state("blank-page").update(false)
+  // Used to have numbering appear only on pages with actual content, kudos to
+  // https://github.com/typst/typst/discussions/3122#discussioncomment-13936086
+  let headings-on-odd-page(it) = {
+    show heading.where(level: 1): it => {
+      {
+        set page(header: none, numbering: none)
+        pagebreak(to: "odd")
+      }
+      it
+    }
     it
   }
+  set heading(numbering: "1.1")
   show heading: smallcaps
   show heading: set block(above: 1.4em, below: 1em)
 
@@ -213,18 +217,16 @@
 
   bib-func
 
-  // Show page number only on non-empty pages
-  set page(footer: context {
-    if not state("blank-page", false).get() {
-      align(center, counter(page).display())
-    }
-  })
+  set page(numbering: "1")
+  show: headings-on-odd-page
 
   counter(page).update(0)
 
   show: init-glossary.with(glossary-entries, term-links: true)
 
   body
+
+  set page(numbering: none)
 
   heading(level: 1, "Bibliography")
 
