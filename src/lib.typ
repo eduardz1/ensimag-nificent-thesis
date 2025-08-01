@@ -3,7 +3,7 @@
 #import "@preview/codly:1.3.0": *
 #import "@preview/codly-languages:0.1.8": *
 #import "@preview/glossy:0.8.0": *
-#import "@preview/lovelace:0.3.0": *
+#import "@preview/algorithmic:1.0.3": style-algorithm
 #import "cover.typ": cover
 
 /// Template for a thesis document.
@@ -195,6 +195,12 @@
     number-format: it => text(fill: luma(200), str(it)),
   )
 
+  show: style-algorithm.with(hlines: (
+    grid.hline(stroke: 1pt + black),
+    grid.hline(stroke: .5pt + black),
+    grid.hline(stroke: 1pt + black),
+  ))
+
   show bibliography: it => {
     show text: it => {
       // we must not attempt to evaluate text that is not valid markup
@@ -265,16 +271,6 @@
   }
 
   if (glossary != none) {
-    glossary(title: "Glossary", theme: theme-chicago-index)
+    glossary(title: "Glossary", theme: theme-basic)
   }
 }
-
-#let my-lovelace-defaults = (
-  line-numbering: "1:",
-  stroke: .5pt,
-  booktabs-stroke: 1pt,
-  hooks: .5em,
-)
-
-#let pseudocode = pseudocode.with(..my-lovelace-defaults)
-#let pseudocode-list = pseudocode-list.with(..my-lovelace-defaults)
