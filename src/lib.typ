@@ -241,11 +241,12 @@
 
   context {
     let (references, ..rest) = get-bibliography("x-")
+    let tags = ("web", "blog", "repository")
     let is-internet-source(x) = {
       return (
-        x.details.type in ("web", "blog")
+        x.details.type in tags
           or if "parent" in x.details.keys() {
-            x.details.parent.type in ("web", "blog")
+            x.details.parent.type in tags
           } else { false }
       )
     }
