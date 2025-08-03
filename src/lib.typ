@@ -107,6 +107,7 @@
   // https://github.com/typst/typst/discussions/3122#discussioncomment-13936086
   let headings-on-odd-page(it) = {
     show heading.where(level: 1): it => {
+      set par(justify: false)
       {
         set page(header: none, numbering: none)
         pagebreak(to: "odd")
