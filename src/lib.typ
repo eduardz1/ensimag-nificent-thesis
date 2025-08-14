@@ -4,7 +4,7 @@
 #import "@preview/codly-languages:0.1.8": *
 #import "@preview/glossy:0.8.0": *
 #import "@preview/algorithmic:1.0.3": style-algorithm
-#import "cover.typ": cover
+#import "cover.typ": balance, cover
 
 /// Template for a thesis document.
 /// -> content
@@ -55,12 +55,13 @@
   show figure.caption: emph
   // Floating figures appear as `place` instead of `block` so we
   // need this workaround, see https://github.com/typst/typst/issues/6095
+  show figure.caption: balance
   show figure: it => {
     if it.placement == none {
       block(it, inset: (y: .75em))
     } else {
       place(
-        it.placement,
+        it.placement + center,
         float: true,
         block(it, inset: (y: .75em)),
       )
@@ -112,13 +113,14 @@
         set page(header: none, numbering: none)
         pagebreak(to: "odd")
       }
-      it
+      balance(it)
     }
     it
   }
   set heading(numbering: "1.1")
   show heading: smallcaps
   show heading: set block(above: 1.4em, below: 1em)
+  show heading: balance
 
   cover(
     specialization: specialization,
@@ -129,12 +131,18 @@
     supervisor: supervisor,
     jury: jury,
   )
+  {
+    set par(justify: false)
+    align(center)[
+      #smallcaps(text(
+        balance(title),
+        size: 1.5em,
+        weight: "bold",
+      ))
 
-  align(center)[
-    #smallcaps(text(title, size: 1.5em, weight: "bold"))
-
-    #smallcaps(text(name, size: 1.2em, weight: "bold"))
-  ]
+      #smallcaps(text(name, size: 1.2em, weight: "bold"))
+    ]
+  }
 
   v(1fr)
 
