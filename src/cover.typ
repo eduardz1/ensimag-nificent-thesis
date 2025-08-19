@@ -19,6 +19,7 @@
   body,
   /// Maximum number of iterations to perform. -> int
   max-iterations: 20,
+  is-figure: false,
   /// The precision to which to balance. -> length
   precision: 0.1em,
 ) = context layout(size => {
@@ -50,6 +51,8 @@
       break
     }
   }
+
+  // set linebreak(justify: true) if par.justify and is-figure
 
   block(width: high, body)
 })

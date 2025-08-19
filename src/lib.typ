@@ -55,7 +55,7 @@
   show figure.caption: emph
   // Floating figures appear as `place` instead of `block` so we
   // need this workaround, see https://github.com/typst/typst/issues/6095
-  show figure.caption: balance
+  show figure.caption: balance.with(is-figure: true)
   show figure: it => {
     if it.placement == none {
       block(it, inset: (y: .75em))
@@ -166,6 +166,7 @@
 
   pagebreak(weak: true, to: "odd")
 
+  show outline.entry: set par(justify: true)
   set outline.entry(fill: repeat[ #sym.space #sym.dot.c ])
   show outline.entry.where(level: 1): it => {
     if it.element.func() != heading {
@@ -177,6 +178,13 @@
       (it.body() + h(1fr) + it.page())
     })))
   }
+  show outline.where(target: selector(figure)): it => {
+    let a = state("image-outline")
+    a.update(true)
+    it
+    a.update(none)
+  }
+
   outline(title: "Table of Contents")
 
   if list-of-tables {
@@ -198,6 +206,7 @@
   show raw.where(block: true): set text(0.8em)
   show: codly-init.with()
   codly(
+    breakable: true,
     languages: codly-languages,
     aliases: ("cuda": "c++"),
     zebra-fill: none,
