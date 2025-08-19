@@ -178,7 +178,10 @@
       (it.body() + h(1fr) + it.page())
     })))
   }
-  show outline.where(target: selector(figure)): it => {
+
+  show outline: it => if it.target == selector(heading) {
+    it
+  } else {
     let a = state("image-outline")
     a.update(true)
     it
