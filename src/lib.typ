@@ -183,9 +183,9 @@
     it
   } else {
     let a = state("image-outline")
-    a.update(true)
+    a.update(false)
     it
-    a.update(none)
+    a.update(true)
   }
 
   outline(title: "Table of Contents")
