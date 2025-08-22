@@ -146,7 +146,7 @@
     my-blue,
     green,
     my-green,
-    lq.color.map.petroff8.at(5).darken(30%),
+    lq.color.map.petroff8.at(5).darken(40%),
     my-magenta,
     // my-red,
     // green,
