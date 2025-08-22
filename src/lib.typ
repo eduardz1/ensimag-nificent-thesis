@@ -147,7 +147,6 @@
     if type(it.dest) == str {
       // web links
       show text: underline
-      // set text(my-blue)
       set text(my-okabe-ito.at(0))
       it
     } else if type(it.dest) != label or not str(it.dest).starts-with("x-") {
@@ -155,23 +154,14 @@
       if not str(repr(it.dest)).starts-with(".") {
         set text(my-okabe-ito.at(3))
         it
+      } else {
+        it
       }
-      it
     } else {
       // bibliography
-      // set text(my-green)
       set text(my-okabe-ito.at(2))
       it
     }
-    // if type(it.dest) != str {
-    //   if it.body.has("text") {
-    //     // glossy links
-    //     it
-    //   } else {
-    //     // bibliography citations
-    //     highlight(stroke: 0.5pt + red, fill: none, it)
-    //   }
-    // } else { underline(it) } // web links
   }
   show ref: set text(my-okabe-ito.at(5))
 
