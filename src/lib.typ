@@ -152,8 +152,10 @@
       it
     } else if type(it.dest) != label or not str(it.dest).starts-with("x-") {
       // glossary
-      // set text(my-cyan)
-      set text(my-okabe-ito.at(3))
+      if not str(repr(it.dest)).starts-with(".") {
+        set text(my-okabe-ito.at(3))
+        it
+      }
       it
     } else {
       // bibliography
@@ -222,6 +224,7 @@
 
   {
     show link: set text(black)
+    show ref: set text(black)
     outline(title: "Table of Contents")
   }
 
