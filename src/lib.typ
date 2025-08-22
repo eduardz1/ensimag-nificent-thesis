@@ -220,7 +220,10 @@
     a.update(true)
   }
 
-  outline(title: "Table of Contents")
+  {
+    show link: set text(black)
+    outline(title: "Table of Contents")
+  }
 
   if list-of-tables {
     pagebreak(weak: true, to: "odd")
@@ -278,7 +281,7 @@
   //   // } else { underline(it) } // web links
   // }
   // show ref: set text(my-okabe-ito.at(5))
-  
+
 
   // show link: underline
   // show link: set text(fill: rgb("#800006"))
