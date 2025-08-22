@@ -3,6 +3,7 @@
 #import "@preview/codly:1.3.0": *
 #import "@preview/codly-languages:0.1.8": *
 #import "@preview/glossy:0.8.0": *
+#import "@preview/lilaq:0.4.0" as lq
 #import "@preview/algorithmic:1.0.3": style-algorithm
 #import "cover.typ": balance, cover
 
@@ -70,23 +71,6 @@
 
   set par(justify: true, first-line-indent: 1.8em)
 
-  // TODO: disable link boxes when printing, possibly automatically
-  // very hacky but it works
-  show link: it => {
-    if type(it.dest) != str {
-      if it.body.has("text") {
-        // glossy links
-        it
-      } else {
-        // bibliography citations
-        highlight(stroke: 0.5pt + red, fill: none, it)
-      }
-    } else { underline(it) } // web links
-  }
-
-  // sections, figures and equations
-  show ref: it => { highlight(stroke: 0.5pt + green, fill: none, it) }
-
   show figure.where(kind: table): set figure.caption(position: top)
   show table.cell.where(y: 0): strong
   show table.cell.where(y: 0): smallcaps
@@ -144,6 +128,12 @@
     ]
   }
 
+  show: alexandria(prefix: "x-")
+
+  bib-func
+
+  show: init-glossary.with(glossary-entries, term-links: true)
+
   v(1fr)
 
   heading(level: 2, numbering: none, outlined: false, "Abstract")
@@ -153,7 +143,10 @@
     "Resumé",
     lang: "fr",
   ))
-  abstract.fr
+  {
+    set text(lang: "fr")
+    abstract.fr
+  }
 
   v(4fr)
 
@@ -205,6 +198,56 @@
     outline(target: figure.where(kind: raw), title: "List of Listings")
   }
 
+  // TODO: disable link boxes when printing, possibly automatically
+  // very hacky but it works
+
+  // https://tex.stackexchange.com/a/525297
+  let my-red = rgb("800006")
+  let my-green = rgb("2E7E2A")
+  let my-blue = rgb("131877")
+  let my-magenta = rgb("8A0087")
+  let my-cyan = rgb("137776")
+
+  let my-okabe-ito = lq.color.map.okabe-ito.map(it => it.darken(40%))
+
+  show link: it => {
+    if type(it.dest) == str {
+      // web links
+      show text: underline
+      // set text(my-blue)
+      set text(my-okabe-ito.at(0))
+      it
+    } else if type(it.dest) != label or not str(it.dest).starts-with("x-") {
+      // glossary
+      // set text(my-cyan)
+      set text(my-okabe-ito.at(3))
+      it
+    } else {
+      // bibliography
+      // set text(my-green)
+      set text(my-okabe-ito.at(2))
+      it
+    }
+    // if type(it.dest) != str {
+    //   if it.body.has("text") {
+    //     // glossy links
+    //     it
+    //   } else {
+    //     // bibliography citations
+    //     highlight(stroke: 0.5pt + red, fill: none, it)
+    //   }
+    // } else { underline(it) } // web links
+  }
+  show ref: set text(my-okabe-ito.at(5))
+  
+
+  // show link: underline
+  // show link: set text(fill: rgb("#800006"))
+  // show link: it => {it.fields()}
+
+  // // sections, figures and equations
+  // // show ref: it => { highlight(stroke: 0.5pt + green, fill: none, it) }
+
   show raw: set text(font: "Fira Code")
   show raw.where(block: true): set text(0.8em)
   show: codly-init.with()
@@ -224,34 +267,28 @@
     grid.hline(stroke: 1pt + black),
   ))
 
-  show bibliography: it => {
-    show text: it => {
-      // we must not attempt to evaluate text that is not valid markup
-      // thankfully most text _is_, but unbalanced closing brackets don't work
-      if it.text == "]" { return it }
+  // show bibliography: it => {
+  //   show text: it => {
+  //     // we must not attempt to evaluate text that is not valid markup
+  //     // thankfully most text _is_, but unbalanced closing brackets don't work
+  //     if it.text == "]" { return it }
 
-      // evaluate any formatting
-      let result = eval(it.text, mode: "markup")
-      // if nothing was formatted, return the original content
-      // to avoid infinite recursion
-      if result.func() == text { return it }
+  //     // evaluate any formatting
+  //     let result = eval(it.text, mode: "markup")
+  //     // if nothing was formatted, return the original content
+  //     // to avoid infinite recursion
+  //     if result.func() == text { return it }
 
-      // emit the formatted content
-      result
-    }
-    it
-  }
-
-  show: alexandria(prefix: "x-")
-
-  bib-func
+  //     // emit the formatted content
+  //     result
+  //   }
+  //   it
+  // }
 
   set page(numbering: "1")
   show: headings-on-odd-page
 
   counter(page).update(0)
-
-  show: init-glossary.with(glossary-entries, term-links: true)
 
   body
 
