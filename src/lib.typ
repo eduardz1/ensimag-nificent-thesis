@@ -142,7 +142,16 @@
   let my-cyan = rgb("137776")
 
   let my-okabe-ito = lq.color.map.okabe-ito.map(it => it.darken(40%))
-  let my-okabe-ito = (my-blue, green, my-green, lq.color.map.petroff8.at(7), my-magenta, my-red, my-red)
+  let my-okabe-ito = (
+    my-blue,
+    green,
+    my-green,
+    lq.color.map.petroff8.at(7),
+    my-magenta,
+    // my-red,
+    // green,
+    lq.color.map.petroff8.at(2),
+  )
   // let my-okabe-ito = {
   //   let x = lq.color.map.petroff8.map(it => it.darken(40%))
   //   (x.at(6), x.at(0), x.at(1), x.at(7), x.at(7), x.at(2))
