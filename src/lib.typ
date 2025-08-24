@@ -141,7 +141,7 @@
   let my-magenta = rgb("8A0087")
   let my-cyan = rgb("137776")
 
-  // let my-okabe-ito = lq.color.map.okabe-ito.map(it => it.darken(40%))
+  let my-okabe-ito = lq.color.map.okabe-ito.map(it => it.darken(40%))
   let my-okabe-ito = (
     // my-blue,
     lq.color.map.okabe-ito.at(0),
@@ -172,7 +172,7 @@
       // glossary
       if not str(repr(it.dest)).starts-with(".") {
         set text(fill: black)
-        it //+ text(fill: my-okabe-ito.at(3), super[#sym.circle.small])
+        it
       } else {
         it
       }
@@ -215,24 +215,18 @@
     if it.element.func() != heading {
       return it
     }
-
-    v(2em, weak: true)
-    link(it.element.location(), strong(it.indented(it.prefix(), {
+    set block(above: 2em)
+    set text(weight: "bold")
+    link(it.element.location(), it.indented(it.prefix(), {
       (it.body() + h(1fr) + it.page())
-    })))
-    // balance(link(it.element.location(), strong(it.indented(it.prefix(), {
-    //   (it.body() + h(1fr) + it.page())
-    // }))))
-    // link(it.element.location(), strong(it.indented(it.prefix(), {
-    //   (balance(it.body()) + h(1fr) + it.page())
-    // })))
+    }))
   }
 
+  let in-outline = state("in-outline", false)
   show outline: it => {
-    let a = state("image-outline")
-    a.update(false)
+    in-outline.update(true)
     it
-    a.update(true)
+    in-outline.update(false)
   }
 
   {

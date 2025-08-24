@@ -23,6 +23,12 @@
   glossary-entries: yaml("glossary.yaml")
 )
 
+= Evaluation of the Performance Improvements in the Proposed Changes
+== a
+=== Hybridizable Discontinuous Galerkin Methods Applied to the Acoustic Wave Problem
+==== Compiling HAWEN with NVFortran and Taking Advantage of GPU Offloading
+==== Treatment of the Stiffness Matrix for Elastic Wave Propagation
+
 #include "chapters/introduction.typ"
 
 #include "chapters/sota.typ"
