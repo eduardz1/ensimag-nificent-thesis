@@ -143,3 +143,22 @@
 
   pagebreak(to: "odd", weak: true)
 }
+
+
+#import "@preview/libra:0.1.0"
+#set heading(numbering: "1.1")
+#show outline.entry.where(level: 1): it => {
+  if it.element.func() != heading {
+    return it
+  }
+
+  v(2em, weak: true)
+  link(it.element.location(), strong(it.indented(it.prefix(), {
+    (libra.balance(it.body()) + h(1fr) + it.page())
+  })))
+}
+
+#outline()
+
+= Test
+== Test

@@ -141,16 +141,21 @@
   let my-magenta = rgb("8A0087")
   let my-cyan = rgb("137776")
 
-  let my-okabe-ito = lq.color.map.okabe-ito.map(it => it.darken(40%))
+  // let my-okabe-ito = lq.color.map.okabe-ito.map(it => it.darken(40%))
   let my-okabe-ito = (
-    my-blue,
-    green,
-    my-green,
-    lq.color.map.petroff8.at(5).darken(40%),
+    // my-blue,
+    lq.color.map.okabe-ito.at(0),
+    // green,
+    lq.color.map.okabe-ito.at(0),
+    // my-green,
+    lq.color.map.okabe-ito.at(2),
+    // lq.color.map.petroff8.at(5).darken(40%),
+    lq.color.map.okabe-ito.at(3),
     my-magenta,
     // my-red,
     // green,
-    lq.color.map.petroff8.at(2),
+    // lq.color.map.petroff8.at(2),
+    lq.color.map.okabe-ito.at(5),
   )
   // let my-okabe-ito = {
   //   let x = lq.color.map.petroff8.map(it => it.darken(40%))
@@ -166,8 +171,8 @@
     } else if type(it.dest) != label or not str(it.dest).starts-with("x-") {
       // glossary
       if not str(repr(it.dest)).starts-with(".") {
-        set text(my-okabe-ito.at(3))
-        it
+        set text(fill: black)
+        it //+ text(fill: my-okabe-ito.at(3), super[#sym.circle.small])
       } else {
         it
       }
@@ -215,11 +220,15 @@
     link(it.element.location(), strong(it.indented(it.prefix(), {
       (it.body() + h(1fr) + it.page())
     })))
+    // balance(link(it.element.location(), strong(it.indented(it.prefix(), {
+    //   (it.body() + h(1fr) + it.page())
+    // }))))
+    // link(it.element.location(), strong(it.indented(it.prefix(), {
+    //   (balance(it.body()) + h(1fr) + it.page())
+    // })))
   }
 
-  show outline: it => if it.target == selector(heading) {
-    it
-  } else {
+  show outline: it => {
     let a = state("image-outline")
     a.update(false)
     it

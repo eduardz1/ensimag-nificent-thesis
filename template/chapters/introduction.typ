@@ -20,11 +20,11 @@ This is a generic title. Replace it with an actual title that describes the cont
 
 Approx one to two-page description of the scientific approach or approaches to a solution and how it was investigated and evaluated. Present a summary of the principal results obtained.
 
-== Contents of this Report
+== Contents of this Report <contents>
 
 Approx half a page per chapter. Summarize the contents of the subsections of each chapter. Give the topics addressed and summarize what is written in each chapter.
 
-You can have glossary entries @html or bibliography @x-1498756, #cite(<x-1498756>, form: "prose") or links to figures @text-fig or links https://www.github.com
+You can have glossary entries @html or bibliography @x-1498756, #cite(<x-1498756>, form: "prose") or links to figures @text-fig, @contents, or links https://www.github.com
 
 #figure(
   box(fill: blue)
