@@ -6,6 +6,47 @@
 #import "@preview/lilaq:0.4.0" as lq
 #import "@preview/algorithmic:1.0.3": style-algorithm
 #import "cover.typ": balance, cover
+#import "@preview/outrageous:0.4.0"
+
+/// Repeat the given content to fill the full space.
+///
+/// Custom function instead of the built-in to support fixed-size gaps.
+///
+/// Parameters:
+/// - gap: The gap between repeated items. (Default: none)
+/// - justify: Whether to increase the gap to justify the items. (Default: false)
+///
+/// Returns: The repeated content.
+///
+/// Based on https://github.com/EpicEricEE/typst-plugins/blob/b13b0e1bc30beba65ff19d029e2dad61239a2819/outex/src/outex.typ#L1-L27
+#let custom-repeat(
+  gap: none,
+  justify: false,
+  body,
+) = layout(size => context {
+  // function to measure length in `pt` unit
+  let pt-length(len) = measure(h(len)).width
+
+  // width of the body to repeat
+  let width = measure(body).width
+  // how often the body should be repeated
+  let repeat-count = calc.floor(
+    pt-length(size.width + gap) / pt-length(width + gap),
+  )
+
+  // justify the gap
+  let gap = if not justify { gap } else {
+    (size.width - repeat-count * width) / (repeat-count - 1)
+  }
+
+  let items = ((box(body),) * repeat-count)
+  if type(gap) == length and gap != 0pt {
+    // add gap between items
+    items = items.intersperse(h(gap))
+  }
+
+  items.join()
+})
 
 /// Template for a thesis document.
 /// -> content
@@ -210,7 +251,14 @@
   pagebreak(weak: true, to: "odd")
 
   show outline.entry: set par(justify: true)
-  set outline.entry(fill: repeat[ #sym.space #sym.dot.c ])
+  // show outline.entry: outrageous.show-entry.with(
+  //   fill: (
+  //     none,
+  //     align(right, custom-repeat(gap: .2em)[#sym.dot.c]),
+  //   ),
+  //   fill-right-pad: 0cm,
+  // )
+  set outline.entry(fill: repeat(gap: .2em)[#sym.dot.c])
   show outline.entry.where(level: 1): it => {
     if it.element.func() != heading {
       return it
