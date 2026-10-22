@@ -24,7 +24,7 @@ Approx one to two-page description of the scientific approach or approaches to a
 
 Approx half a page per chapter. Summarize the contents of the subsections of each chapter. Give the topics addressed and summarize what is written in each chapter.
 
-You can have glossary entries @html or bibliography @x-1498756, #cite(<x-1498756>, form: "prose") or links to figures @text-fig, @contents, or links https://www.github.com
+You can have glossary entries @html or bibliography @1498756, #cite(<1498756>, form: "prose") or links to figures @text-fig, @contents, or links https://www.github.com
 
 #figure(
   box(fill: blue)

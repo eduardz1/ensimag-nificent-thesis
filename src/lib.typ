@@ -1,12 +1,31 @@
 #import "@preview/tidy:0.4.3"
-#import "@preview/alexandria:0.2.0": *
 #import "@preview/codly:1.3.0": *
 #import "@preview/codly-languages:0.1.8": *
-#import "@preview/glossy:0.8.0": *
+#import "@preview/glossy:0.9.2": *
 #import "@preview/lilaq:0.4.0" as lq
 #import "@preview/algorithmic:1.0.3": style-algorithm
 #import "cover.typ": balance, cover
 #import "@preview/outrageous:0.4.0"
+
+/// Partition Hayagriva entries for Typst's native, jointly numbered bibliographies.
+/// Prefixing the serialized keys preserves existing citation labels in the thesis.
+#let split-bibliography(entries, prefix: "") = {
+  let internet-types = ("web", "blog", "repository")
+  let is-internet-source(entry) = {
+    let parents = entry.at("parent", default: ())
+    if type(parents) == dictionary { parents = (parents,) }
+    lower(entry.type) in internet-types or parents.any(parent => lower(parent.type) in internet-types)
+  }
+  let sources = (scientific: (:), internet: (:))
+  for (key, entry) in entries {
+    let section = if is-internet-source(entry) { "internet" } else { "scientific" }
+    sources.at(section).insert(prefix + key, entry)
+  }
+  (
+    (title: [Scientific Literature], sources: bytes(yaml.encode(sources.scientific))),
+    (title: [Internet Sources], sources: bytes(yaml.encode(sources.internet))),
+  )
+}
 
 /// Repeat the given content to fill the full space.
 ///
@@ -76,8 +95,8 @@
   ),
   /// The acknowledgments of the thesis -> content | none
   acknowledgements: none,
-  /// Call to the bibliography function
-  bib-func: none,
+  /// Native bibliography sections: dictionaries with title and sources fields.
+  bibliographies: (),
   /// Wether to include the list of tables. -> bool
   list-of-tables: false,
   /// Wether to include the list of figures. -> bool
@@ -128,6 +147,8 @@
   )
 
   set math.equation(numbering: "(1)")
+  // Typst 0.15's New Computer Modern update moved the old calligraphic forms.
+  show math.equation: set text(stylistic-set: 6)
 
   // Used to have numbering appear only on pages with actual content, kudos to
   // https://github.com/typst/typst/discussions/3122#discussioncomment-13936086
@@ -168,10 +189,6 @@
       #smallcaps(text(name, size: 1.2em, weight: "bold"))
     ]
   }
-
-  show: alexandria(prefix: "x-")
-
-  bib-func
 
   show: init-glossary.with(glossary-entries, term-links: true)
 
@@ -224,6 +241,7 @@
     }
   }
   show ref: set text(my-okabe-ito.at(5))
+  show cite: set text(my-okabe-ito.at(2))
 
   v(1fr)
 
@@ -398,36 +416,11 @@
 
   set heading(numbering: none, offset: 1)
 
-  context {
-    let (references, ..rest) = get-bibliography("x-")
-    let tags = ("web", "blog", "repository")
-    let is-internet-source(x) = {
-      return (
-        x.details.type in tags
-          or if "parent" in x.details.keys() {
-            x.details.parent.type in tags
-          } else { false }
-      )
-    }
-
-    [= Scientific Literature]
-
+  for section in bibliographies {
+    heading(level: 2, offset: 0, section.title)
     {
       set text(0.8em)
-      render-bibliography(title: none, (
-        references: references.filter(x => not is-internet-source(x)),
-        ..rest,
-      ))
-    }
-
-    [= Internet Sources]
-
-    {
-      set text(0.8em)
-      render-bibliography(title: none, (
-        references: references.filter(x => is-internet-source(x)),
-        ..rest,
-      ))
+      bibliography(section.sources, title: none, style: "ieee", group: "thesis")
     }
   }
 
@@ -471,7 +464,7 @@
 
       block(
         below: 1em,
-      )[*#entry.short*#entry.label#long-form#description #h(1em) [pp. #entry.pages]]
+      )[*#entry.short*#entry.label#long-form#description #h(1em) [pp. #entry.pages.join(", ")]]
     },
   )
 

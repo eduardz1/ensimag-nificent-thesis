@@ -1,5 +1,4 @@
-// #import "@local/ensimag-nificent-thesis:0.1.0": template, load-bibliography
-#import "../src/lib.typ": template, load-bibliography
+#import "../src/lib.typ": template
 #import "abstract.typ": abstract-en, abstract-fr
 #import "acknowledgements.typ": acknowledgements
 
@@ -16,7 +15,7 @@
   ),
   abstract: (en: abstract-en, fr: abstract-fr),
   acknowledgements: acknowledgements,
-  bib-func: load-bibliography(read("works.bib", encoding: none)),
+  bibliographies: ((title: [References], sources: read("works.bib", encoding: none)),),
   list-of-figures: true,
   list-of-tables: true,
   list-of-listings: true,
