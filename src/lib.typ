@@ -70,6 +70,8 @@
 /// Template for a thesis document.
 /// -> content
 #let template(
+  /// Cover renderer; defaults to the Grenoble cover.
+  cover-renderer: cover,
   /// The specialization -> str
   specialization: "<Your Specialization>",
   /// The thesis' title. -> str
@@ -168,7 +170,7 @@
   show heading: set block(above: 1.4em, below: 1em)
   show heading: balance
 
-  cover(
+  cover-renderer(
     specialization: specialization,
     title: title,
     defense-date: defense-date,
