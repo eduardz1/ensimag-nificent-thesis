@@ -251,7 +251,7 @@
   abstract.en
 
   heading(level: 2, numbering: none, outlined: false, text(
-    "Resumé",
+    "Résumé",
     lang: "fr",
   ))
   {
